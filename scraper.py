@@ -1,62 +1,67 @@
 #!/usr/bin/env python3
-# scraper.py - Parse M3U + Merge BunchaTV + Force update support
-
 import json
 import re
 import yaml
-import sys
-import hashlib
-import argparse
 from pathlib import Path
 import requests
 
-CONFIG_PATH = Path("config.yml")
-OUTPUT_PATH = Path("output.json")
+# Load config
+with open("config.yml", "r", encoding="utf-8") as f:
+    cfg = yaml.safe_load(f)
 
-def load_config() -> dict:
-    with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
-        return yaml.safe_load(f)
+# Đọc M3U
+m3u = Path(cfg["sources"]["m3u_file"]).read_text(encoding="utf-8")
 
-def fetch_text(url_or_path: str) -> str:
-    p = Path(url_or_path)
-    if p.exists() and p.is_file():
-        return p.read_text(encoding='utf-8')
-    return requests.get(url_or_path, headers={'User-Agent': 'Mozilla/5.0'}, timeout=30).text
+# Parse channels từ M3U
+channels = []
+lines = [l.strip() for l in m3u.split("\n") if l.strip()]
+current = None
 
-def parse_m3u_channels(content: str) -> list:
-    lines = [l.strip() for l in content.split('\n') if l.strip()]
-    channels, current = [], None
-    for line in lines:
-        if line.startswith('#EXTINF:'):
-            name = re.search(r',(.+)$', line)
-            attrs = dict(re.findall(r'(\w+(?:-\w+)*)="([^"]*)"', line))
-            current = {'name': name.group(1).strip() if name else '', **attrs}
-        elif line.startswith('http') and current:
+for line in lines:
+    if line.startswith("#EXTINF:"):
+        name = re.search(r",(.+)$", line)
+        name = name.group(1).strip() if name else ""
+        logo = re.search(r'tvg-logo="([^"]*)"', line)
+        logo = logo.group(1) if logo else ""
+        group = re.search(r'group-title="([^"]*)"', line)
+        group = group.group(1) if group else "Uncategorized"
+        current = {"name": name, "logo": logo, "group": group}
+    elif line.startswith("http") and current:
+        # Lọc chỉ lấy VTV và HTV Thể Thao
+        if current["group"] == "Kênh VTV" or current["name"] == "HTV Thể Thao":
             channels.append({
-                'name': current.get('name', ''),
-                'url': line,
-                'logo': current.get('tvg-logo', ''),
-                'group': current.get('group-title', 'Uncategorized'),
-                'tvg_id': current.get('tvg-id', '')
+                "id": f"tv-{len(channels)}",
+                "name": current["name"],
+                "url": line,
+                "logo": current["logo"]
             })
-            current = None
-    return channels
+        current = None
 
-def filter_channels(channels: list, filters: dict) -> list:
-    allowed_grp = filters.get('allowed_groups', [])
-    allowed_nm = filters.get('allowed_names', [])
-    out = []
-    for ch in channels:
-        if allowed_nm and ch['name'] in allowed_nm:
-            out.append(ch)
-        elif allowed_grp and ch['group'] in allowed_grp:
-            out.append(ch)
-    return out
+# Tạo TV group
+tv_group = {
+    "id": "grp-tv-channels",
+    "name": "📺 Kênh Truyền Hình",
+    "display": "vertical",
+    "grid_number": 3,
+    "enable_detail": False,
+    "channels": channels
+}
 
-def build_channel(ch: dict, idx: int, cfg: dict) -> dict:
-    defa = cfg.get('channel_defaults', {})
-    entry = {
-        'id': f"tv-{ch['tvg_id'] or idx}" if ch['tvg_id'] else f"tv-{idx}",
-        'name': ch['name'],
-        'url': ch['url'],
-        '
+print(f"✅ Lấy được {len(channels)} kênh TV")
+
+# Fetch buncha JSON
+print("📦 Fetching buncha JSON...")
+buncha = requests.get(cfg["sources"]["buncha_json"]).json()
+
+# Merge: TV group trên đầu + buncha groups bên dưới
+result = {
+    **buncha,
+    "groups": [tv_group] + buncha.get("groups", [])
+}
+
+# Ghi file
+with open("output.json", "w", encoding="utf-8") as f:
+    json.dump(result, f, ensure_ascii=False, indent=2)
+
+print(f"✨ DONE! File output.json đã được tạo ({len(result['groups'])} groups)")
+print(f"📍 Vị trí: {Path('output.json').resolve()}")
