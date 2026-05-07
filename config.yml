@@ -1,3 +1,4 @@
 sources:
   tv_json: "./hoiquan.json"
   buncha_json: "https://raw.githubusercontent.com/xixixius-ai/buncha-stream/refs/heads/main/output.json"
+output: "output.json"
