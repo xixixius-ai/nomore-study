@@ -1,68 +1,89 @@
 {
-  "id": "tv-vtv1-buncha-fix",
-  "name": "VTV1 HD | 24/7",
-  "type": "single",
-  "display": "thumbnail-only",
-  "enable_detail": false,
-  
-  "labels": [
-    {
-      "text": "🔴 Trực Tiếp",
-      "position": "top-left",
-      "color": "#f70525",
-      "text_color": "#ffffff"
-    }
-  ],
-  
+  "id": "thapcam",
+  "url": "https://thapcam24h.net",
+  "name": "ThapcamTV",
+  "color": "#e63946",
+  "grid_number": 3,
   "image": {
-    "padding": 1,
-    "background_color": "#ffffff",
-    "display": "contain",
-    "url": "https://toiyeuvietnam.dpdns.org/Logo/vtv1-hd/KenhCoBan.png",
-    "width": 1600,
-    "height": 1200
+    "type": "cover",
+    "url": "https://thapcam24h.net/img/thapcam24h.png"
   },
-  
-  "sources": [
+  "groups": [
     {
-      "id": "src-tv-vtv1",
-      "name": "BunchaTV",
-      "contents": [
+      "id": "grp-2bd7230b6f",
+      "name": "⚽ Bóng Đá (2 LIVE)",
+      "display": "vertical",
+      "grid_number": 2,
+      "enable_detail": false,
+      "channels": [
         {
-          "id": "ct-tv-vtv1",
-          "name": "VTV1 HD",
-          "streams": [
+          "id": "thapcam-d4369ad142",
+          "name": "Mirassol vs Liga Dep Universitaria Quito",
+          "type": "single",
+          "display": "thumbnail-only",
+          "enable_detail": false,
+          "labels": [
             {
-              "id": "st-tv-vtv1",
-              "name": "Live",
-              "stream_links": [
+              "text": "● LIVE",
+              "position": "top-left",
+              "color": "#00000080",
+              "text_color": "#ff4444"
+            }
+          ],
+          "sources": [
+            {
+              "id": "src-d4369ad142",
+              "name": "ThapcamTV",
+              "contents": [
                 {
-                  "id": "l-tv-vtv1",
-                  "name": "Link 1",
-                  "url": "https://toiyeuvietnam.dpdns.org/TuyetDoiKhongKinhDoanh/vtv1-hd/KenhCoBan.m3u8",
-                  "type": "hls",
-                  "default": true,
-                  "subtitles": null,
-                  "remote_data": null,
-                  "request_headers": null
+                  "id": "ct-d4369ad142",
+                  "name": "Mirassol vs Liga Dep Universitaria Quito",
+                  "streams": [
+                    {
+                      "id": "st-d4369ad142",
+                      "name": "KT",
+                      "stream_links": [
+                        {
+                          "id": "lnk-872d9bb829",
+                          "name": "BLV Jayce",
+                          "type": "hls",
+                          "default": true,
+                          "url": "https://cdn-hls.phogatv8.com/live/69fd0236137e4_181/index.m3u8?expire=1778793654&sign=ecc3ce55d3697fc5e0c66e07273169e8",
+                          "request_headers": [
+                            {
+                              "key": "Referer",
+                              "value": "https://thapcam24h.net/"
+                            },
+                            {
+                              "key": "User-Agent",
+                              "value": "Mozilla/5.0"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
-          ]
-        }
-      ]
-    }
-  ],
-  
-  "org_metadata": {
-    "league": "Vietnam National TV",
-    "team_a": "VTV1 HD",
-    "team_b": "",
-    "logo_a": "https://toiyeuvietnam.dpdns.org/Logo/vtv1-hd/KenhCoBan.png",
-    "logo_b": "",
-    "time": "24/7",
-    "blv": "",
-    "is_live": true,
-    "cate_name": "Truyền Hình"
-  }
-}
+          ],
+          "org_metadata": {
+            "league": "CONMEBOL Copa Libertadores",
+            "team_a": "Mirassol",
+            "team_b": "Liga Dep Universitaria Quito",
+            "logo_a": "https://cdn-live.taoxanh.biz/live-phogatv/football/team/logo/b20645448c644b701286477f55b11e24.png",
+            "logo_b": "https://cdn-live.taoxanh.biz/live-phogatv/football/team/logo/8b048da33a06a2257101bb110b81e290.png",
+            "time": "",
+            "blv": "BLV Jayce",
+            "is_live": true,
+            "cate_name": "Bóng đá"
+          },
+          "image": {
+            "padding": 1,
+            "background_color": "#ffffff",
+            "display": "contain",
+            "url": "https://raw.githubusercontent.com/Bigblok-ai/bigscraper/refs/heads/main/thumbs/thapcam-d4369ad142_a3652531_20260508.png?v=a3652531",
+            "width": 1600,
+            "height": 1200
+          }
+        },
