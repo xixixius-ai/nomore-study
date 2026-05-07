@@ -1,27 +1,60 @@
-#!/usr/bin/env python3
-import json, yaml, requests
+import json
+import requests
+import yaml
 from pathlib import Path
 
-cfg = yaml.safe_load(Path("config.yml").read_text(encoding="utf-8"))
-tv_list = json.loads(Path(cfg["sources"]["tv_json"]).read_text(encoding="utf-8"))
-buncha = requests.get(cfg["sources"]["buncha_json"]).json()
+def load_config():
+    with open("config.yml", "r", encoding="utf-8") as f:
+        return yaml.safe_load(f)
 
-# Transform sang format MON Player cần
-def fmt(ch, i):
-    return {
-        "id": f"tv-{i}", "name": ch["name"], "description": "",
-        "label": {"text": "Trực Tiếp", "position": "top-left", "color": "#f70525", "text_color": "#ffffff"},
-        "image": {"url": ch.get("logo",""), "type": "cover", "width": 640, "height": 480},
-        "grid_number": 1, "display": "text-below", "type": "single", "enable_detail": True,
-        "sources": [{"id": f"s-{i}", "name": "src", "image": None, "contents": [{
-            "id": f"c-{i}", "name": "cnt", "image": None, "streams": [{
-                "id": f"st-{i}", "name": "Live", "image": {"url": ch.get("logo",""), "type": "cover"},
-                "stream_links": [{"id": f"l-{i}", "name": "Link 1", "url": ch["url"], "type": "hls",
-                    "default": True, "subtitles": None, "remote_data": None, "request_headers": [
-                        {"key": "Referer", "value": "https://xem.hoiquan.click/"},
-                        {"key": "User-Agent", "value": "Mozilla/5.0"}]}]}]}], "remote_data": None}]}
+def extract_channels(data, cfg):
+    selected = []
+    target_group = cfg["filters"]["group_name"]
+    target_channel = cfg["filters"]["channel_name"]
 
-tv_group = {**cfg["tv_group"], "channels": [fmt(ch,i) for i,ch in enumerate(tv_list)]}
-result = {**buncha, "groups": [tv_group] + buncha.get("groups", [])}
-Path("output.json").write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
-print(f"✅ Done: {len(tv_list)} TV channels + {len(buncha['groups'])} buncha groups")
+    for group in data.get("groups", []):
+        if group.get("name") == target_group:
+            selected.extend(group.get("channels", []))
+        for ch in group.get("channels", []):
+            if ch.get("name") == target_channel and ch not in selected:
+                selected.append(ch)
+    return selected
+
+def main():
+    cfg = load_config()
+    print("📂 Đọc dữ liệu nguồn...")
+
+    with open(cfg["sources"]["input_json"], "r", encoding="utf-8") as f:
+        source_data = json.load(f)
+
+    tv_channels = extract_channels(source_data, cfg)
+    print(f"✅ Đã lấy được {len(tv_channels)} kênh TV")
+
+    if not tv_channels:
+        print("❌ Không tìm thấy kênh. Kiểm tra lại file nguồn.")
+        return
+
+    new_group = {
+        "id": cfg["tv_group"]["id"],
+        "name": cfg["tv_group"]["name"],
+        "display": cfg["tv_group"]["display"],
+        "grid_number": cfg["tv_group"]["grid_number"],
+        "enable_detail": cfg["tv_group"]["enable_detail"],
+        "channels": tv_channels
+    }
+
+    print("📦 Fetching BunchaTV JSON...")
+    buncha = requests.get(cfg["sources"]["buncha_url"]).json()
+
+    result = {
+        **buncha,
+        "groups": [new_group] + buncha.get("groups", [])
+    }
+
+    output_path = Path("output.json")
+    output_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"✨ DONE! Đã lưu vào {output_path}")
+    print(f"📊 Tổng groups: {len(result['groups'])}")
+
+if __name__ == "__main__":
+    main()
