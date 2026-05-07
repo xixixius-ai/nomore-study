@@ -1,13 +1,13 @@
 {
-  "id": "tv-vtv1-fixed-test",
-  "name": "VTV1 HD",
+  "id": "tv-vtv1-buncha-fix",
+  "name": "VTV1 HD | 24/7",
   "type": "single",
   "display": "thumbnail-only",
   "enable_detail": false,
   
   "labels": [
     {
-      "text": "Trực Tiếp",
+      "text": "🔴 Trực Tiếp",
       "position": "top-left",
       "color": "#f70525",
       "text_color": "#ffffff"
@@ -53,3 +53,16 @@
       ]
     }
   ],
+  
+  "org_metadata": {
+    "league": "Vietnam National TV",
+    "team_a": "VTV1 HD",
+    "team_b": "",
+    "logo_a": "https://toiyeuvietnam.dpdns.org/Logo/vtv1-hd/KenhCoBan.png",
+    "logo_b": "",
+    "time": "24/7",
+    "blv": "",
+    "is_live": true,
+    "cate_name": "Truyền Hình"
+  }
+}
