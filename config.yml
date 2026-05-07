@@ -1,6 +1,5 @@
-# config.yml
 sources:
-  m3u_file: "./hoiquan.m3u"          # File M3U đã clone/paste trong repo
+  tv_json: "./hoiquan.json"          # File JSON chứa danh sách kênh TV
   buncha_json: "https://raw.githubusercontent.com/xixixius-ai/buncha-stream/refs/heads/main/output.json"
 
 tv_group:
@@ -9,15 +8,3 @@ tv_group:
   display: "vertical"
   grid_number: 3
   enable_detail: false
-
-filters:
-  allowed_groups: ["Kênh VTV"]
-  allowed_names: ["HTV Thể Thao"]
-
-channel_defaults:
-  type: "single"
-  display: "thumbnail-only"
-  enable_detail: false
-  add_live_label: true
-  add_referer_header: true
-  referer_url: "https://xem.hoiquan.click/"
