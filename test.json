@@ -1,60 +1,68 @@
 {
-  "id": "tv-vtv1-test",
-  "name": "VTV1 HD",
-  "type": "live",
-  
-  "stream_links": [
-    "https://toiyeuvietnam.dpdns.org/TuyetDoiKhongKinhDoanh/vtv1-hd/KenhCoBan.m3u8"
-  ],
-  "stream_type": "hls",
-  
-  "image": {
-    "url": "https://toiyeuvietnam.dpdns.org/Logo/vtv1-hd/KenhCoBan.png",
-    "type": "thumbnail",
-    "display": "contain",
-    "padding": "0",
-    "background_color": "#000000",
-    "width": 320,
-    "height": 180
-  },
+  "id": "tv-vtv1-clone-test",
+  "name": "VTV1 HD | 24/7",
+  "type": "single",
+  "display": "thumbnail-only",
+  "enable_detail": false,
   
   "labels": [
     {
-      "text": "LIVE",
+      "text": "🔴 LIVE",
       "position": "top-left",
       "color": "#f70525",
-      "text_color": "#ffffff",
-      "font_size": 12
+      "text_color": "#ffffff"
     }
   ],
   
-  "display": "thumbnail-only",
-  "grid_number": 1,
+  "sources": [
+    {
+      "id": "src-tv-vtv1",
+      "name": "BunchaTV",
+      "contents": [
+        {
+          "id": "ct-tv-vtv1",
+          "name": "VTV1 HD",
+          "streams": [
+            {
+              "id": "st-tv-vtv1",
+              "name": "Live",
+              "stream_links": [
+                {
+                  "id": "l-tv-vtv1",
+                  "name": "Link 1",
+                  "url": "https://toiyeuvietnam.dpdns.org/TuyetDoiKhongKinhDoanh/vtv1-hd/KenhCoBan.m3u8",
+                  "type": "hls",
+                  "default": true,
+                  "subtitles": null,
+                  "remote_data": null,
+                  "request_headers": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
   
   "org_metadata": {
-    "cate_name": "Truyền Hình",
-    "cate_id": "tv-channels",
-    "is_live": true,
     "league": "Vietnam National TV",
-    "team_a": "VTV1",
+    "team_a": "VTV1 HD",
     "team_b": "",
+    "logo_a": "https://toiyeuvietnam.dpdns.org/Logo/vtv1-hd/KenhCoBan.png",
+    "logo_b": "",
     "time": "24/7",
-    "status": "ongoing",
-    "priority": 1
+    "blv": "",
+    "is_live": true,
+    "cate_name": "Truyền Hình"
   },
   
-  "group": "Kênh Truyền Hình",
-  "group_id": "tv-group",
-  
-  "description": "Kênh truyền hình quốc gia Việt Nam",
-  "language": "vi",
-  "country": "VN",
-  
-  "request_headers": {
-    "User-Agent": "VLC/3.0.0 LibVLC/3.0.0",
-    "Referer": "https://toiyeuvietnam.dpdns.org/"
-  },
-  
-  "created_at": "2026-01-01T00:00:00Z",
-  "updated_at": "2026-01-01T00:00:00Z"
+  "image": {
+    "padding": 1,
+    "background_color": "#ffffff",
+    "display": "contain",
+    "url": "https://toiyeuvietnam.dpdns.org/Logo/vtv1-hd/KenhCoBan.png",
+    "width": 1600,
+    "height": 1200
+  }
 }
