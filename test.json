@@ -1,0 +1,9 @@
+{
+  "id": "tv-test-flat",
+  "name": "VTV1 HD (Test)",
+  "type": "live",
+  "stream_url": "https://toiyeuvietnam.dpdns.org/TuyetDoiKhongKinhDoanh/vtv1-hd/KenhCoBan.m3u8",
+  "stream_type": "hls",
+  "logo": "https://toiyeuvietnam.dpdns.org/Logo/vtv1-hd/KenhCoBan.png",
+  "group": "Kênh Truyền Hình"
+}
