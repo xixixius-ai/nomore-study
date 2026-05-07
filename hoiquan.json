@@ -1,5 +1,3 @@
-#Danh sách kênh truyền hình được chuyển đổi từ M3U, kênh được tổng hợp từ https://xem.hoiquan.click
-
 [
   {"name": "ANTV", "url": "https://toiyeuvietnam.dpdns.org/TuyetDoiKhongKinhDoanh/antv/KenhCoBan.m3u8", "logo": "https://toiyeuvietnam.dpdns.org/Logo/antv/KenhCoBan.png"},
   {"name": "QPVN HD", "url": "https://toiyeuvietnam.dpdns.org/TuyetDoiKhongKinhDoanh/qpvn-hd/KenhCoBan.m3u8", "logo": "https://toiyeuvietnam.dpdns.org/Logo/qpvn-hd/KenhCoBan.png"},
