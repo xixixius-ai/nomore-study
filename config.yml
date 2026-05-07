@@ -1,13 +1,8 @@
-# config.yml - Cấu hình scraper (không cần sửa code)
-
-# Nguồn dữ liệu
+# config.yml
 sources:
-  # File M3U local
-  m3u_file: "./hoiquan.m3u"
-  # JSON gốc từ GitHub
+  m3u_file: "./hoiquan.m3u"          # File M3U đã clone/paste trong repo
   buncha_json: "https://raw.githubusercontent.com/xixixius-ai/buncha-stream/refs/heads/main/output.json"
 
-# Cấu hình group "Kênh Truyền Hình"
 tv_group:
   id: "grp-tv-channels"
   name: "📺 Kênh Truyền Hình"
@@ -15,21 +10,14 @@ tv_group:
   grid_number: 3
   enable_detail: false
 
-# Lọc kênh: chỉ lấy VTV + HTV Thể Thao
 filters:
-  # Lọc theo group-title trong M3U
-  allowed_groups:
-    - "Kênh VTV"
-  
-  # Lọc theo tên kênh chính xác (ưu tiên cao hơn group)
-  allowed_names:
-    - "HTV Thể Thao"
+  allowed_groups: ["Kênh VTV"]
+  allowed_names: ["HTV Thể Thao"]
 
-# Metadata mặc định cho channel (app đọc được)
 channel_defaults:
   type: "single"
   display: "thumbnail-only"
   enable_detail: false
-  add_live_label: true           # Thêm nhãn ● LIVE
-  add_referer_header: true       # Thêm Referer để tránh lỗi 403
+  add_live_label: true
+  add_referer_header: true
   referer_url: "https://xem.hoiquan.click/"
