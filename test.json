@@ -1,4 +1,15 @@
 {
+  "id": "buncha",
+  "url": "https://bunchatv4.net",
+  "name": "BunchaTV",
+  "color": "#f0582f",
+  "grid_number": 3,
+  "image": {
+    "type": "cover",
+    "url": "https://raw.githubusercontent.com/xixixius-ai/buncha-stream/94679d465e9ba68acd4fabcf1af740e8b7222823/logo.svg"
+  },
+  "groups": [
+{
   "id": "tv-vtv1-clone-test",
   "name": "VTV1 HD | 24/7",
   "type": "single",
