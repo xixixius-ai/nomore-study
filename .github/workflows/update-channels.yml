@@ -1,50 +1,24 @@
 name: 📺 Auto Update TV Channels
 
 on:
-  workflow_dispatch:             # ✅ Chạy thủ công từ GitHub UI
-  repository_dispatch:           # ✅ Cho phép trigger từ bên ngoài (cron-job.org)
-    types: [update-tv-channels]  # Event type tùy chọn, có thể đổi tên
-  push:
-    paths:
-      - 'hoiquan.m3u'
-      - 'config.yml'
-      - 'scraper.py'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [update-tv-channels]
 
 jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
-      contents: write            # Quyền push code
+      contents: write
     steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}  # Đảm bảo có quyền push
-
-      - name: 🐍 Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: 📦 Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: 🔄 Run scraper
-        id: scraper
-        run: python scraper.py || true  # || true để không fail pipeline khi exit code 1
-
-      - name: 🔍 Check if output changed
-        id: git_diff
-        run: |
-          git diff --quiet output.json && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
-        continue-on-error: true
-
-      - name: 📤 Commit & push if changed
-        if: steps.git_diff.outputs.changed == 'true'
-        run: |
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install requests
+      - run: python scraper.py
+      - run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add output.json
-          git commit -m "📺 Auto-update: Kênh truyền hình đã thay đổi"
+          git commit -m "📺 Auto-update TV channels" || exit 0
           git push
