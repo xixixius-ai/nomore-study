@@ -1,24 +1,40 @@
+# .github/workflows/update-channels.yml
 name: 📺 Auto Update TV Channels
 
 on:
-  workflow_dispatch:
-  repository_dispatch:
-    types: [update-tv-channels]
+  workflow_dispatch:             # ✅ Chạy thủ công từ GitHub UI
+  repository_dispatch:           # ✅ Trigger từ bên ngoài (cron-job.org)
+    types: [update-tv]           # Tên event type
+  push:
+    paths:
+      - 'hoiquan.json'
+      - 'config.yml'
+      - 'scraper.py'
 
 jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write            # Cấp quyền push code
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: '3.11' }
-      - run: pip install requests
-      - run: python scraper.py
-      - run: |
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: pip install requests pyyaml
+
+      - name: 🔄 Run scraper
+        run: python scraper.py
+
+      - name: 📤 Commit & push if changed
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add output.json
-          git commit -m "📺 Auto-update TV channels" || exit 0
+          git diff --cached --quiet || git commit -m "📺 Auto-update TV channels"
           git push
