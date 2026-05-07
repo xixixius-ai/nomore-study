@@ -1,10 +1,3 @@
 sources:
-  tv_json: "./hoiquan.json"          # File JSON chứa danh sách kênh TV
+  tv_json: "./hoiquan.json"
   buncha_json: "https://raw.githubusercontent.com/xixixius-ai/buncha-stream/refs/heads/main/output.json"
-
-tv_group:
-  id: "grp-tv-channels"
-  name: "📺 Kênh Truyền Hình"
-  display: "vertical"
-  grid_number: 3
-  enable_detail: false
